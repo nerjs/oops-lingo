@@ -1,0 +1,25 @@
+{
+  "name": "oops-lingo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "watch": "tailwindcss -i style/global.css -o target/styles/style.css --watch --no-purge",
+    "build": "tailwindcss -i style/global.css -o target/styles/style.css -m"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nerjs/oops-lingo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nerjs/oops-lingo/issues"
+  },
+  "homepage": "https://github.com/nerjs/oops-lingo#readme",
+  "dependencies": {
+    "@tailwindcss/cli": "4.1.1",
+    "tailwindcss": "4.1.1"
+  }
+}
