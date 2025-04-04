@@ -14,5 +14,18 @@ updates:
     labels:
       - "dependencies"
       - "bot"
+      - "cargo"
+    target-branch: "dependencies"
+    open-pull-requests-limit: 5
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "nerjs"
+    labels:
+      - "dependencies"
+      - "bot"
+      - "npm"
     target-branch: "dependencies"
     open-pull-requests-limit: 5
