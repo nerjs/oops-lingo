@@ -5,8 +5,8 @@
 
 version: 2
 updates:
-  - package-ecosystem: "cargo" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "cargo"
+    directory: "/"
     schedule:
       interval: "weekly"
     assignees:
@@ -14,5 +14,24 @@ updates:
     labels:
       - "dependencies"
       - "bot"
+      - "cargo"
     target-branch: "dependencies"
     open-pull-requests-limit: 5
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "nerjs"
+    labels:
+      - "dependencies"
+      - "bot"
+      - "npm"
+    target-branch: "dependencies"
+    open-pull-requests-limit: 5
+    groups:
+      tailwindcss:
+        patterns:
+          - "@tailwindcss/cli"
+          - "tailwindcss"

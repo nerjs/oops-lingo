@@ -1,0 +1,76 @@
+name: "CI: tests, linter and build"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - main
+      - dependencies
+
+jobs:
+  tailwindcss:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip-CI]')"
+    
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Install npm dependencies
+        run: npm i
+        
+      - name: Build CSS
+        run: npm run build
+        
+      # - name: Upload CSS artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: css-artifact
+      #     path: target/styles/style.css
+
+  try-build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/nerjs/rust-dx-container:1.1.0
+    if: "!contains(github.event.head_commit.message, '[skip-CI]')"
+    # needs: tailwindcss 
+    
+    steps:
+          
+      - name: Checkout repository
+        uses: actions/checkout@v3
+            
+      - name: Cache Cargo target directory
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-target-
+        
+      # - name: Download CSS artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: css-artifact
+      #     path: target/styles/
+          
+      - name: Check Rust formatting
+        run: cargo fmt --all --check
+          
+      - name: Check RSX formatting
+        run: dx fmt --verbose --check
+        
+      - name: Cargo build
+        run: cargo build --verbose
+        
+      # - name: Run tests
+      #   run: cargo test --verbose
