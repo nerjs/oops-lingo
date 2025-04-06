@@ -76,9 +76,7 @@ fn user_input(loading: bool) -> Element {
                 if loading {
                     CardFooter { "Loading..." }
                 }
-            
             }
-        
         }
     }
 }

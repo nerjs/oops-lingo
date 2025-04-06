@@ -16,14 +16,14 @@ fn BaseIcon<T: IconShape + Clone + PartialEq + 'static>(icon: T, class: Option<S
 
 #[component]
 pub fn SendIcon() -> Element {
-    rsx!(
+    rsx! {
         BaseIcon { icon: BsSendFill }
-    )
+    }
 }
 
 #[component]
 pub fn CancelIcon() -> Element {
-    rsx!(
+    rsx! {
         BaseIcon { icon: MdCancel }
-    )
+    }
 }
