@@ -1,18 +1,28 @@
 use dioxus::signals::{Readable, Signal, Writable};
 
+#[derive(Clone, Debug, PartialEq)]
+pub enum ProcessingState {
+    InterpretationOptions(Vec<String>),
+}
+
 #[derive(Debug, Default, Clone, PartialEq)]
 pub enum LingoState {
     #[default]
     UserInput,
+    Processing {
+        user_input: String,
+        processing_state: ProcessingState,
+    },
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct StateInfo {
     pub state: LingoState,
     pub error: Option<String>,
     pub loading: bool,
 }
 
+#[derive(Clone)]
 pub struct StateInfoUpdater {
     state: StateInfo,
     signal: Signal<StateInfo>,
@@ -49,8 +59,9 @@ impl StateInfoUpdater {
         self
     }
 
-    pub fn update(&mut self) {
+    pub fn update(mut self) -> Self {
         *self.signal.write() = self.state.clone();
+        self
     }
 }
 

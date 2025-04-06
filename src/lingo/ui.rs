@@ -1,6 +1,12 @@
 use dioxus::prelude::*;
 
-use crate::lingo::state::LingoState;
+use crate::{
+    lingo::state::LingoState,
+    ui::{
+        card::{Card, CardFooter, CardGroup, CardGroupHeader},
+        input::CardInput,
+    },
+};
 
 use super::{state::StateInfo, worker::Action};
 
@@ -40,39 +46,50 @@ pub fn ui_container(state: Signal<StateInfo>, children: Element) -> Element {
     }
 }
 
-fn user_input() -> Element {
+fn user_input(loading: bool) -> Element {
     let tx = use_coroutine_handle::<Action>();
-    let mut input_signal = use_signal(|| String::new());
+    let input_signal = use_signal(|| String::new());
+    let mut disabled_submit = use_signal(|| false);
+
+    use_effect(move || {
+        let text_length = input_signal.read().clone().trim().len();
+        if text_length == 0 {
+            disabled_submit.set(true);
+        } else {
+            disabled_submit.set(false);
+        }
+    });
 
     rsx! {
-        div { class: "w-full flex flex-col p-3 gap-1 items-center",
+        CardGroup {
+            CardGroupHeader { title: "Input text" }
 
-            textarea {
-                value: "{input_signal}",
-                oninput: move |e| input_signal.set(e.value()),
-                onkeypress: move |e| {
-                    if e.code() == Code::Enter && e.modifiers() == Modifiers::CONTROL {
-                        e.prevent_default();
-                        tx.send(Action::UserInput(input_signal.read().clone()));
-                    }
-                },
-                class: "border-2 rounded-md w-full p-1",
-                rows: 4,
-            }
-            button {
-                r#type: "submit",
-                class: "w-md border-4 rounded-3xl",
-                onclick: move |_| tx.send(Action::UserInput(input_signal.read().clone())),
+            Card {
+                CardInput {
+                    input: input_signal,
+                    placeholder: "Type in the text here",
+                    disabled: loading,
+                    disabled_submit: *disabled_submit.read(),
+                    onsubmit: move |_| tx.send(Action::UserInput(input_signal.read().clone())),
+                }
 
-                "Send"
+                if loading {
+                    CardFooter { "Loading..." }
+                }
+            
             }
+        
         }
     }
 }
 
 #[component]
-pub fn ui_page(state: LingoState) -> Element {
-    match state {
-        LingoState::UserInput => user_input(),
+pub fn ui_page(state: StateInfo) -> Element {
+    match &state.state {
+        LingoState::UserInput => user_input(state.loading),
+        LingoState::Processing {
+            user_input,
+            processing_state,
+        } => todo!(),
     }
 }

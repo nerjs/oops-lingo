@@ -13,6 +13,7 @@ pub fn CardInput(
     maxrows: Option<u8>,
     disabled: Option<bool>,
     disabled_submit: Option<bool>,
+    placeholder: Option<String>,
     children: Element,
 ) -> Element {
     let rows = use_signal(|| minrows.unwrap_or(4));
@@ -41,10 +42,13 @@ pub fn CardInput(
                     value: "{input}",
                     rows,
                     disabled,
+                    placeholder,
 
                     oninput: move |e| input.set(e.value()),
                     onkeypress: move |e| {
-                        if e.code() == Code::Enter && e.modifiers() == Modifiers::CONTROL {
+                        if e.code() == Code::Enter && e.modifiers() == Modifiers::CONTROL
+                            && !disabled_submit
+                        {
                             e.prevent_default();
                             if let Some(handler) = onsubmit {
                                 handler.call(());
@@ -58,8 +62,10 @@ pub fn CardInput(
                 CardControlButton {
                     disabled: disabled_submit,
                     onclick: move |_| {
-                        if let Some(handler) = onsubmit {
-                            handler.call(());
+                        if !disabled_submit {
+                            if let Some(handler) = onsubmit {
+                                handler.call(());
+                            }
                         }
                     },
 

@@ -29,7 +29,7 @@ pub fn lingo_container() -> Element {
 
     rsx! {
         ui_container { state: state_signal,
-            ui_page { state: state_signal.read().state.clone() }
+            ui_page { state: state_signal.read().clone() }
         }
     }
 }
