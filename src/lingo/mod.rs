@@ -6,7 +6,6 @@ use ui::{ui_container, ui_page};
 use worker::{handle_action, Action};
 
 mod api;
-mod result;
 mod state;
 mod ui;
 mod worker;
