@@ -52,7 +52,7 @@ pub fn CardFooter(children: Element) -> Element {
 #[component]
 pub fn CardContent(children: Element) -> Element {
     rsx! {
-        div { class: "flex-1 bg-slate-100 rounded-l-md", {children} }
+        div { class: "flex-1 bg-slate-100 rounded-l-md px-2 py-1 text-lg", {children} }
     }
 }
 
@@ -71,7 +71,7 @@ pub fn CardControlButton(
 ) -> Element {
     rsx! {
         button {
-            class: "w-7 h-7 ursor-pointer flex justify-center items-center group/button disabled:opacity-30 disabled:cursor-default",
+            class: "w-7 h-7 cursor-pointer flex justify-center items-center group/button disabled:opacity-30 disabled:cursor-default",
             onclick,
             disabled,
 

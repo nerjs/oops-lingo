@@ -1,6 +1,10 @@
 use dioxus::prelude::*;
 use dioxus_free_icons::{
-    icons::{bs_icons::BsSendFill, md_navigation_icons::MdCancel},
+    icons::{
+        bs_icons::BsSendFill,
+        md_image_icons::MdEdit,
+        md_navigation_icons::{MdCancel, MdCheck, MdRefresh},
+    },
     Icon, IconShape,
 };
 
@@ -25,5 +29,26 @@ pub fn SendIcon() -> Element {
 pub fn CancelIcon() -> Element {
     rsx! {
         BaseIcon { icon: MdCancel }
+    }
+}
+
+#[component]
+pub fn RefreshIcon() -> Element {
+    rsx! {
+        BaseIcon { icon: MdRefresh }
+    }
+}
+
+#[component]
+pub fn EditIcon() -> Element {
+    rsx! {
+        BaseIcon { icon: MdEdit }
+    }
+}
+
+#[component]
+pub fn CheckIcon() -> Element {
+    rsx! {
+        BaseIcon { icon: MdCheck }
     }
 }

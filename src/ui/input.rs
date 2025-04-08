@@ -13,6 +13,7 @@ pub fn CardInput(
     maxrows: Option<u8>,
     disabled: Option<bool>,
     disabled_submit: Option<bool>,
+    autofocus: Option<bool>,
     placeholder: Option<String>,
     children: Element,
 ) -> Element {
@@ -38,12 +39,12 @@ pub fn CardInput(
         CardBody {
             CardContent {
                 textarea {
-                    class: "w-full outline-0 border-0 rounded-md resize-none text-lg px-2 py-1 font-normal text-slate-900 disabled:opacity-90 disabled:text-slate-800/90",
+                    class: "w-full outline-0 border-0 rounded-md resize-none text-lg font-normal text-slate-900 disabled:opacity-90 disabled:text-slate-800/90",
                     value: "{input}",
                     rows,
                     disabled,
                     placeholder,
-
+                    autofocus,
                     oninput: move |e| input.set(e.value()),
                     onkeypress: move |e| {
                         if e.code() == Code::Enter && e.modifiers() == Modifiers::CONTROL

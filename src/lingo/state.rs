@@ -15,11 +15,28 @@ pub enum LingoState {
     },
 }
 
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct StateInfo {
     pub state: LingoState,
     pub error: Option<String>,
     pub loading: bool,
+}
+
+impl Default for StateInfo {
+    fn default() -> Self {
+        Self {
+            state: LingoState::Processing {
+                user_input: "some string\nTratata".to_string(),
+                processing_state: ProcessingState::InterpretationOptions(vec![
+                    "first option".to_string(),
+                    "second option\nqwerty".to_string(),
+                    "last option\nTratata".to_string(),
+                ]),
+            },
+            error: None,
+            loading: false,
+        }
+    }
 }
 
 #[derive(Clone)]
